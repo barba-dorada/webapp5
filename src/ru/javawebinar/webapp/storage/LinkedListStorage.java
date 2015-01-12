@@ -4,6 +4,7 @@ import ru.javawebinar.webapp.WebAppException;
 import ru.javawebinar.webapp.model.Resume;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * Created by vad on 10.01.2015.
@@ -11,6 +12,10 @@ import java.util.*;
 public class LinkedListStorage extends AbstractStorage {
 
     List<Resume> list = new LinkedList<>();
+
+    public LinkedListStorage() {
+        logger = Logger.getLogger(LinkedListStorage.class.getName());
+    }
 
     @Override
     protected void doSave(Resume r) {

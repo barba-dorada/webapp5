@@ -7,12 +7,16 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * GKislin
  * 09.01.2015.
  */
 public class HashMapStorage extends AbstractStorage {
+    public HashMapStorage() {
+        logger = Logger.getLogger(HashMapStorage.class.getName());
+    }
 
     Map<String, Resume> map = new HashMap<>();
 

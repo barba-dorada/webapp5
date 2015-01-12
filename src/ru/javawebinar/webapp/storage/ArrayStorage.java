@@ -21,7 +21,7 @@ public class ArrayStorage extends AbstractStorage {
 
     public ArrayStorage() {
         super();
-        logger = Logger.getLogger("ttt");
+        logger = Logger.getLogger(ArrayStorage.class.getName());
     }
 
 

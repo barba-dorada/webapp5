@@ -14,12 +14,12 @@ import java.util.logging.Logger;
 public class A {
 
     public static void main(String[] args) {
-        try {
+/*        try {
             LogManager.getLogManager().readConfiguration(
                     A.class.getResourceAsStream("/logging.properties"));
         } catch (IOException e) {
             System.err.println("Could not setup logger configuration: " + e.toString());
-        }
+        }*/
 
         long currentDateTime = System.currentTimeMillis();
         System.out.println(currentDateTime);
@@ -29,7 +29,7 @@ public class A {
         //printing value of Date
         System.out.println("current Date: " + currentDate);
 
-        Logger logger = Logger.getLogger("aaaa");
+        Logger logger = Logger.getLogger(A.class.getName());
         logger.info("info1");
         logger.fine("fine1");
 
