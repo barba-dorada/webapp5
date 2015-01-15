@@ -3,10 +3,7 @@ package ru.javawebinar.webapp.storage;
 import ru.javawebinar.webapp.WebAppException;
 import ru.javawebinar.webapp.model.Resume;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -53,10 +50,9 @@ public class HashMapStorage extends AbstractStorage {
 
     @Override
     public Collection<Resume> getAllSorted() {
-        Resume[] a=new Resume[size()];
-        map.values().toArray(a);
-        Arrays.sort(a);
-        return Arrays.asList(a);
+        List<Resume> list=new LinkedList<Resume>(map.values());
+        Collections.sort(list);
+        return list;
     }
 
     @Override

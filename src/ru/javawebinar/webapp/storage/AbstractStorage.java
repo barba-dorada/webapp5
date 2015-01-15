@@ -1,5 +1,6 @@
 package ru.javawebinar.webapp.storage;
 
+import ru.javawebinar.webapp.LoggerWrapper;
 import ru.javawebinar.webapp.WebAppException;
 import ru.javawebinar.webapp.model.Resume;
 
@@ -11,6 +12,7 @@ import java.util.logging.Logger;
  * 09.01.2015.
  */
 abstract public class AbstractStorage implements IStorage {
+    protected LoggerWrapper lw= LoggerWrapper.get(getClass());
     protected Logger logger = Logger.getLogger("---");
 
     @Override

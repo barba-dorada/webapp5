@@ -1,6 +1,6 @@
 package ru.javawebinar.webapp.storage;
 
-import ru.javawebinar.webapp.WebAppException;
+import ru.javawebinar.webapp.LoggerWrapper;
 import ru.javawebinar.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -22,6 +22,7 @@ public class ArrayStorage extends AbstractStorage {
     public ArrayStorage() {
         super();
         logger = Logger.getLogger(ArrayStorage.class.getName());
+        lw= LoggerWrapper.get(getClass());
     }
 
 
@@ -34,25 +35,25 @@ public class ArrayStorage extends AbstractStorage {
     @Override
     protected void doSave(Resume r) {
         int idx = getIndex(r.getUuid());
-        if (idx != -1) throw new WebAppException("Resume " + r.getUuid() + "already exist", r);
+        if (idx != -1) throw lw.getWebAppException("Resume already exist", r);
         array[size++] = r;
     }
 
     protected void doUpdate(Resume r) {
         int idx = getIndex(r.getUuid());
-        if (idx == -1) throw new WebAppException("Resume " + r.getUuid() + "not exist", r);
+        if (idx == -1) throw lw.getWebAppException("Resume not exist", r);
         array[idx] = r;
     }
 
     protected Resume doLoad(String uuid) {
         int idx = getIndex(uuid);
-        if (idx == -1) throw new WebAppException("Resume " + uuid + "not exist");
+        if (idx == -1) throw lw.getWebAppException("Resume not exist",uuid);
         return array[idx];
     }
 
     protected void doDelete(String uuid) {
         int idx = getIndex(uuid);
-        if (idx == -1) throw new WebAppException("Resume " + uuid + "not exist");
+        if (idx == -1) throw lw.getWebAppException("Resume not exist",uuid);
         int numMoved = size - idx - 1;
         if (numMoved > 0)
             System.arraycopy(array, idx + 1, array, idx,
