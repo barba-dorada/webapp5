@@ -24,7 +24,12 @@ public class LoggerWrapper {
     }
 
     public void info(String msg) {
-        logger.info(msg);
+        logger.info( msg);
+    }
+
+    public void info(String msg, String uuid) {
+        if (uuid != null) msg += " (uuid:" + uuid + ")";
+        logger.info( msg);
     }
 
     public void warn(String msg) {
@@ -40,17 +45,12 @@ public class LoggerWrapper {
     }
 
     public void error(String msg) {
-        logger.log(Level.SEVERE,"LW:"+ msg);
+        logger.log(Level.SEVERE,  msg);
     }
 
     public void error(String msg, Throwable t) {
         logger.log(Level.SEVERE, msg, t);
     }
-
-     /*   public boolean isDebug() {
-            return logger.isDebugEnabled();
-        }*/
-
 
     public WebAppException getWebAppException(String msg) {
         error(msg);

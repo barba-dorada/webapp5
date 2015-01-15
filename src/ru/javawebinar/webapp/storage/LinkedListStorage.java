@@ -1,10 +1,8 @@
 package ru.javawebinar.webapp.storage;
 
-import ru.javawebinar.webapp.WebAppException;
 import ru.javawebinar.webapp.model.Resume;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * Created by vad on 10.01.2015.
@@ -14,12 +12,12 @@ public class LinkedListStorage extends AbstractStorage {
     List<Resume> list = new LinkedList<>();
 
     public LinkedListStorage() {
-        logger = Logger.getLogger(LinkedListStorage.class.getName());
+        //logger = Logger.getLogger(LinkedListStorage.class.getName());
     }
 
     @Override
     protected void doSave(Resume r) {
-        if (list.contains(r)) throw new WebAppException("uuid already exist!");
+        if (list.contains(r)) throw logger.getWebAppException("uuid already exist!");
         list.add(r);
     }
 
@@ -31,7 +29,7 @@ public class LinkedListStorage extends AbstractStorage {
     @Override
     protected void doUpdate(Resume r) {
         int idx = list.indexOf(r);
-        if (idx == -1) throw new WebAppException("uuid not found!", r.getUuid());
+        if (idx == -1) throw logger.getWebAppException("uuid not found!", r.getUuid());
         list.set(idx, r);
     }
 
@@ -39,7 +37,7 @@ public class LinkedListStorage extends AbstractStorage {
     public Resume doLoad(String uuid) {
         Resume resume = new Resume(uuid, "", "");
         int idx = list.indexOf(resume);
-        if (idx == -1) throw new WebAppException("uuid not found!", uuid);
+        if (idx == -1) throw logger.getWebAppException("uuid not found!", uuid);
         return list.get(idx);
     }
 
