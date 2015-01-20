@@ -12,7 +12,7 @@ public final class Resume implements Comparable<Resume> {
     private String location;
     //private String homePage;
     private Map<ContactType,String> contacts = new HashMap<>();
-    private List<Section> sections = new LinkedList<>();
+    private Map<SectionType,Section> sections = new HashMap<>();
 
     public Resume(String fullName, String location) {
         this(UUID.randomUUID().toString(), fullName, location);
@@ -24,8 +24,8 @@ public final class Resume implements Comparable<Resume> {
         this.location = location;
     }
 
-    public void addSection(Section section) {
-        sections.add(section);
+    public void addSection(SectionType type,Section section) {
+        sections.put(type,section);
     }
 
     public void addContact(ContactType type, String value) {
@@ -52,8 +52,8 @@ public final class Resume implements Comparable<Resume> {
         return contacts;
     }
 
-    public List<Section> getSections() {
-        return sections;
+    public Collection<Section> getSections() {
+        return sections.values();
     }
 
     public void setFullName(String fullName) {
