@@ -1,9 +1,6 @@
 package ru.javawebinar.webapp.model;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * gkislin
@@ -13,8 +10,8 @@ public final class Resume implements Comparable<Resume> {
     private final String uuid;
     private String fullName;
     private String location;
-    private String homePage;
-    private List<Contact> contacts = new LinkedList<>();
+    //private String homePage;
+    private Map<ContactType,String> contacts = new HashMap<>();
     private List<Section> sections = new LinkedList<>();
 
     public Resume(String fullName, String location) {
@@ -31,8 +28,8 @@ public final class Resume implements Comparable<Resume> {
         sections.add(section);
     }
 
-    public void addContact(Contact contact) {
-        contacts.add(contact);
+    public void addContact(ContactType type, String value) {
+        contacts.put(type, value);
     }
 
     public String getUuid() {
@@ -47,11 +44,11 @@ public final class Resume implements Comparable<Resume> {
         return location;
     }
 
-    public String getHomePage() {
-        return homePage;
-    }
+//    public String getHomePage() {
+//        return homePage;
+//    }
 
-    public List<Contact> getContacts() {
+    public Map<ContactType,String> getContacts() {
         return contacts;
     }
 
@@ -67,9 +64,9 @@ public final class Resume implements Comparable<Resume> {
         this.location = location;
     }
 
-    public void setHomePage(String homePage) {
-        this.homePage = homePage;
-    }
+//    public void setHomePage(String homePage) {
+//        this.homePage = homePage;
+//    }
 
     @Override
     public int hashCode() {

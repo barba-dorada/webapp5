@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.webapp.WebAppException;
-import ru.javawebinar.webapp.model.Contact;
 import ru.javawebinar.webapp.model.ContactType;
 import ru.javawebinar.webapp.model.Resume;
 
@@ -28,11 +27,11 @@ public abstract class AbstractStorageTest {
     @Before
     public void before() {
         R1 = new Resume("Полное Имя1", "location1");
-        R1.addContact(new Contact(ContactType.MAIL, "mail1@ya.ru"));
-        R1.addContact(new Contact(ContactType.PHONE, "11111"));
+        R1.addContact(ContactType.MAIL, "mail1@ya.ru");
+        R1.addContact(ContactType.PHONE, "11111");
         R2 = new Resume("Полное Имя2", null);
-        R2.addContact(new Contact(ContactType.SKYPE, "skype2"));
-        R2.addContact(new Contact(ContactType.PHONE, "22222"));
+        R2.addContact(ContactType.SKYPE, "skype2");
+        R2.addContact(ContactType.PHONE, "22222");
         R3 = new Resume("Полное Имя3", null);
         R4 = new Resume("Полное Имя4", null);
         storage.clear();

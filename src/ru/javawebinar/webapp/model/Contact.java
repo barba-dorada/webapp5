@@ -4,6 +4,7 @@ package ru.javawebinar.webapp.model;
  * GKislin
  * 19.12.2014.
  */
+@Deprecated
 public class Contact {
     private final ContactType type;
     private final String value;

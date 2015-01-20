@@ -17,7 +17,7 @@ public class HashMapStorage extends AbstractStorage {
 
     @Override
     protected void doSave(Resume r) {
-        if (map.get(r.getUuid()) != null) throw logger.getWebAppException("Resume " + r.getUuid() + "already exist", r);
+        if (map.get(r.getUuid()) != null) throw logger.getWebAppException("Resume already exist", r);
         map.put(r.getUuid(), r);
     }
 

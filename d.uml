@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="60.25" y="501.5">ru.javawebinar.webapp.model.OrganizationSection</node>
+    <node x="29.5" y="256.0">ru.javawebinar.webapp.model.Organization</node>
+    <node x="592.25" y="424.0">ru.javawebinar.webapp.model.Resume</node>
+    <node x="418.25" y="501.5">ru.javawebinar.webapp.model.MultiTextSection</node>
+    <node x="671.5" y="0.0">ru.javawebinar.webapp.model.ContactType</node>
+    <node x="687.0" y="267.0">ru.javawebinar.webapp.model.Contact</node>
+    <node x="271.25" y="490.5">ru.javawebinar.webapp.model.TextSection</node>
+    <node x="0.0" y="22.0">ru.javawebinar.webapp.model.Link</node>
+    <node x="343.0" y="289.5">ru.javawebinar.webapp.model.Section</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="ru.javawebinar.webapp.model.OrganizationSection" target="ru.javawebinar.webapp.model.Organization">
+      <point x="-47.75" y="-25.5" />
+      <point x="0.0" y="59.0" />
+    </edge>
+    <edge source="ru.javawebinar.webapp.model.TextSection" target="ru.javawebinar.webapp.model.Section">
+      <point x="0.0" y="-36.5" />
+      <point x="334.75" y="404.0" />
+      <point x="397.0" y="404.0" />
+      <point x="-18.0" y="25.5" />
+    </edge>
+    <edge source="ru.javawebinar.webapp.model.Resume" target="ru.javawebinar.webapp.model.Section">
+      <point x="-62.75" y="-103.0" />
+      <point x="655.0" y="394.0" />
+      <point x="469.0" y="394.0" />
+      <point x="54.0" y="25.5" />
+    </edge>
+    <edge source="ru.javawebinar.webapp.model.Contact" target="ru.javawebinar.webapp.model.ContactType">
+      <point x="0.0" y="-48.0" />
+      <point x="0.0" y="103.0" />
+    </edge>
+    <edge source="ru.javawebinar.webapp.model.Organization" target="ru.javawebinar.webapp.model.Link">
+      <point x="0.0" y="-59.0" />
+      <point x="0.0" y="81.0" />
+    </edge>
+    <edge source="ru.javawebinar.webapp.model.Resume" target="ru.javawebinar.webapp.model.Contact">
+      <point x="62.75" y="-103.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+    <edge source="ru.javawebinar.webapp.model.MultiTextSection" target="ru.javawebinar.webapp.model.Section">
+      <point x="0.0" y="-25.5" />
+      <point x="495.25" y="404.0" />
+      <point x="433.0" y="404.0" />
+      <point x="18.0" y="25.5" />
+    </edge>
+    <edge source="ru.javawebinar.webapp.model.OrganizationSection" target="ru.javawebinar.webapp.model.Section">
+      <point x="47.75" y="-25.5" />
+      <point x="203.5" y="394.0" />
+      <point x="361.0" y="394.0" />
+      <point x="-54.0" y="25.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.8365617433414043" x="492.20405209840817" y="434.4457308248915" />
+  <SelectedNodes>
+    <node>ru.javawebinar.webapp.model.Contact</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

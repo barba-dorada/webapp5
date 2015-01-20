@@ -2,6 +2,7 @@
 .idea_modules
 idea.bat
 out
+lib
 target
 *.iml
 atlassian-ide-plugin.xml

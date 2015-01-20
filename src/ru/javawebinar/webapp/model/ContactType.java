@@ -10,7 +10,8 @@ public enum ContactType {
     HOME_PHONE("Домашний тел."),
     SKYPE("Skype"),
     MAIL("Почта"),
-    ICQ("ICQ");
+    ICQ("ICQ"),
+    HOME_PAGE("домашняя страница");
 
     private String title;
 
