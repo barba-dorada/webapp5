@@ -8,12 +8,12 @@ public class TextSection extends Section{
     private String title;
     private String comment;
 
-    public TextSection(SectionType type) {
-        super(type);
-    }
+//    public TextSection(SectionType type) {
+//        //super(type);
+//    }
 
-    public TextSection(SectionType type, String title, String comment) {
-        super(type);
+    public TextSection( String title, String comment) {
+        //super(type);
         this.title = title;
         this.comment=comment;
     }

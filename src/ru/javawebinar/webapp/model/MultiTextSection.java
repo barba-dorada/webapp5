@@ -8,8 +8,8 @@ import java.util.List;
  */
 public class MultiTextSection extends Section {
     private List<String> values;
-
-    public MultiTextSection(SectionType type) {
-        super(type);
-    }
+//
+//    public MultiTextSection(SectionType type) {
+//        super(type);
+//    }
 }

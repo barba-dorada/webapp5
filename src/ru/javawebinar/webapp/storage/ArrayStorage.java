@@ -10,7 +10,7 @@ import java.util.Collection;
  * GKislin
  * 26.12.2014.
  */
-public class ArrayStorage extends AbstractStorage {
+public class ArrayStorage extends AbstractStorage<Integer> {
     private static final int LIMIT = 100;
 
     private Resume[] array = new Resume[LIMIT];
@@ -18,9 +18,8 @@ public class ArrayStorage extends AbstractStorage {
 
     public ArrayStorage() {
         super();
+        NOT_FOUND_CTX=-1;
     }
-
-
 
     protected void doClear() {
         Arrays.fill(array, null);
@@ -28,30 +27,22 @@ public class ArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doSave(Resume r) {
-        int idx = getIndex(r.getUuid());
-        if (idx != -1) throw logger.getWebAppException("Resume already exist", r);
+    protected void doSave(Resume r,Integer ctx) {
         array[size++] = r;
     }
 
-    protected void doUpdate(Resume r) {
-        int idx = getIndex(r.getUuid());
-        if (idx == -1) throw logger.getWebAppException("Resume not exist", r);
-        array[idx] = r;
+    protected void doUpdate(Resume r,Integer ctx) {
+        array[ctx] = r;
     }
 
-    protected Resume doLoad(String uuid) {
-        int idx = getIndex(uuid);
-        if (idx == -1) throw logger.getWebAppException("Resume not exist",uuid);
-        return array[idx];
+    protected Resume doLoad(String uuid,Integer ctx) {
+        return array[ctx];
     }
 
-    protected void doDelete(String uuid) {
-        int idx = getIndex(uuid);
-        if (idx == -1) throw logger.getWebAppException("Resume not exist",uuid);
-        int numMoved = size - idx - 1;
+    protected void doDelete(String uuid,Integer ctx) {
+        int numMoved = size - ctx - 1;
         if (numMoved > 0)
-            System.arraycopy(array, idx + 1, array, idx,
+            System.arraycopy(array, ctx + 1, array, ctx,
                     numMoved);
         array[--size] = null; // clear to let GC do its work
     }
@@ -68,7 +59,8 @@ public class ArrayStorage extends AbstractStorage {
         return size;
     }
 
-    private int getIndex(String uuid) {
+    @Override
+    Integer getContext(String uuid) {
         for (int i = 0; i < LIMIT; i++) {
             if (array[i] != null) {
                 if (array[i].getUuid().equals(uuid)) {
@@ -76,6 +68,6 @@ public class ArrayStorage extends AbstractStorage {
                 }
             }
         }
-        return -1;
+        return NOT_FOUND_CTX;
     }
 }

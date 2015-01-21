@@ -21,19 +21,19 @@ public class PrintResume {
         p.addContact(ContactType.MAIL, "gkislin@yandex.ru");
         p.addContact(ContactType.SKYPE, "grigory.kislin");
 
-        p.addSection(mkAchivementSec("Архитектор/ Технический лидер/ Старший Scala/Java разработчик"));
+        p.addSection(SectionType.OBJECTIVE,new TextSection("Архитектор/ Технический лидер/ Старший Scala/Java разработчик",""));
 
-        p.addSection(new TextSection(SectionType.ACHIEVEMENT, "Разработка и проведение Java тренингов", ""));
-        p.addSection(new TextSection(SectionType.ACHIEVEMENT, "Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. ", ""));
+        p.addSection(SectionType.ACHIEVEMENT,new TextSection( "Разработка и проведение Java тренингов", ""));
+        p.addSection(SectionType.ACHIEVEMENT, new TextSection("Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. ", ""));
 
-        p.addSection(new TextSection(SectionType.QUALIFICATIONS, "JEE AS...", ""));
-        p.addSection(new TextSection(SectionType.QUALIFICATIONS, "Frameworks...", ""));
+        p.addSection(SectionType.QUALIFICATIONS, new TextSection("JEE AS...", ""));
+        p.addSection(SectionType.QUALIFICATIONS,new TextSection( "Frameworks...", ""));
 
-        p.addSection(new TextSection(SectionType.EXPERIENCE, "RIT Center", "Java архитектор"));
-        p.addSection(new TextSection(SectionType.EXPERIENCE, "Basis Capital", "Системный архитектор"));
+        p.addSection(SectionType.EXPERIENCE,new TextSection( "RIT Center", "Java архитектор"));
+        p.addSection(SectionType.EXPERIENCE,new TextSection( "Basis Capital", "Системный архитектор"));
 
-        p.addSection(new TextSection(SectionType.EDUCATION, "Luxoft", "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML."));
-        p.addSection(new TextSection(SectionType.EDUCATION, "Институт Точной Механики и Оптики (Технический университет)",
+        p.addSection(SectionType.EDUCATION,new TextSection( "Luxoft", "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML."));
+        p.addSection(SectionType.EDUCATION,new TextSection( "Институт Точной Механики и Оптики (Технический университет)",
                 "Аспирантура"));
 
 /*
@@ -57,8 +57,5 @@ Luxoft
         p.print();
     }
 
-    static TextSection mkAchivementSec(String text) {
-        TextSection a = new TextSection(SectionType.OBJECTIVE, text, "");
-        return a;
-    }
+
 }

@@ -8,16 +8,15 @@ import java.util.*;
  * GKislin
  * 09.01.2015.
  */
-public class HashMapStorage extends AbstractStorage {
+public class HashMapStorage extends AbstractStorage<Resume> {
     public HashMapStorage() {
-        //logger = Logger.getLogger(HashMapStorage.class.getName());
+        NOT_FOUND_CTX=null;
     }
 
     Map<String, Resume> map = new HashMap<>();
 
     @Override
-    protected void doSave(Resume r) {
-        if (map.get(r.getUuid()) != null) throw logger.getWebAppException("Resume already exist", r);
+    protected void doSave(Resume r,Resume ctx) {
         map.put(r.getUuid(), r);
     }
 
@@ -27,23 +26,18 @@ public class HashMapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doUpdate(Resume r) {
-        Resume rr = map.get(r.getUuid());
-        if (rr == null) throw logger.getWebAppException("unable update, uuid not found!", r);
+    protected void doUpdate(Resume r,Resume ctx) {
         map.put(r.getUuid(), r);
     }
 
     @Override
-    protected Resume doLoad(String uuid) {
-        Resume resume = map.get(uuid);
-        if (resume == null) throw logger.getWebAppException("uuid not found!",uuid);
-        return resume;
+    protected Resume doLoad(String uuid,Resume ctx) {
+        return ctx;
     }
 
     @Override
-    protected void doDelete(String uuid) {
-        Resume resume = map.remove(uuid);
-        if (resume == null) throw logger.getWebAppException("uuid not found!",uuid);
+    protected void doDelete(String uuid,Resume ctx) {
+        map.remove(uuid);
     }
 
     @Override
@@ -56,5 +50,10 @@ public class HashMapStorage extends AbstractStorage {
     @Override
     public int size() {
         return map.size();
+    }
+
+    @Override
+    Resume getContext(String uuid) {
+        return map.get(uuid);
     }
 }

@@ -30,13 +30,13 @@ private void sectionsInit(){
     }
 
 }
-//    public void addSection(SectionType type,Section section) {
-//        sections.get(type).add(section);
-//    }
-
-    public void addSection(Section section) {
-        sections.get(section.type).add(section);
+    public void addSection(SectionType type,Section section) {
+        sections.get(type).add(section);
     }
+
+//    public void addSection(Section section) {
+//        sections.get(section.type).add(section);
+//    }
 
 
     public void addContact(ContactType type, String value) {
