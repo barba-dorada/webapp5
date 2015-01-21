@@ -10,27 +10,31 @@ import ru.javawebinar.webapp.model.TextSection;
  */
 public class PrintPerson {
     public static void main(String[] args) {
-        Resume p=new Resume("uuid","Кислин Григорий","Россия, г. Санкт-Петербург");
-        p.addContact(ContactType.HOME_PAGE,"http://gkislin.ru");
-       // Проживание: Россия, г. Санкт-Петербург
-        p.addContact(ContactType.MOBILE,"+7 (921) 855 0482");
-        p.addContact(ContactType.MAIL,"gkislin@yandex.ru");
-        p.addContact(ContactType.SKYPE,"grigory.kislin");
+
+        /*
+        http://gkislin.ru/ru/cv.html
+         */
+        Resume p = new Resume( "Кислин Григорий", "Россия, г. Санкт-Петербург");
+        p.addContact(ContactType.HOME_PAGE, "http://gkislin.ru");
+        // Проживание: Россия, г. Санкт-Петербург
+        p.addContact(ContactType.MOBILE, "+7 (921) 855 0482");
+        p.addContact(ContactType.MAIL, "gkislin@yandex.ru");
+        p.addContact(ContactType.SKYPE, "grigory.kislin");
+
         p.addSection(mkAchivementSec("Архитектор/ Технический лидер/ Старший Scala/Java разработчик"));
-        p.addSection(new TextSection(SectionType.ACHIEVEMENT,"Разработка и проведение Java тренингов",""));
-        p.addSection(new TextSection(SectionType.ACHIEVEMENT,"Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. ",""));
-        p.addSection(new TextSection(SectionType.QUALIFICATIONS,"JEE AS...",""));
-        p.addSection(new TextSection(SectionType.QUALIFICATIONS,"Frameworks...",""));
 
-        p.addSection(new TextSection(SectionType.EXPERIENCE,"RIT Center","Java архитектор"));
-        p.addSection(new TextSection(SectionType.EXPERIENCE,"Basis Capital","Системный архитектор"));
+        p.addSection(new TextSection(SectionType.ACHIEVEMENT, "Разработка и проведение Java тренингов", ""));
+        p.addSection(new TextSection(SectionType.ACHIEVEMENT, "Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. ", ""));
 
-        p.addSection(new TextSection(SectionType.EDUCATION,"Luxoft","Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML."));
-        p.addSection(new TextSection(SectionType.EDUCATION,"Институт Точной Механики и Оптики (Технический университет)",
-                "Аспирантура/"));
+        p.addSection(new TextSection(SectionType.QUALIFICATIONS, "JEE AS...", ""));
+        p.addSection(new TextSection(SectionType.QUALIFICATIONS, "Frameworks...", ""));
 
+        p.addSection(new TextSection(SectionType.EXPERIENCE, "RIT Center", "Java архитектор"));
+        p.addSection(new TextSection(SectionType.EXPERIENCE, "Basis Capital", "Системный архитектор"));
 
-
+        p.addSection(new TextSection(SectionType.EDUCATION, "Luxoft", "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML."));
+        p.addSection(new TextSection(SectionType.EDUCATION, "Институт Точной Механики и Оптики (Технический университет)",
+                "Аспирантура"));
 
 /*
 Опыт работы
@@ -52,9 +56,9 @@ Luxoft
 
         p.print();
     }
-    static TextSection mkAchivementSec(String text){
-        TextSection a = new TextSection(SectionType.OBJECTIVE,text,"");
 
+    static TextSection mkAchivementSec(String text) {
+        TextSection a = new TextSection(SectionType.OBJECTIVE, text, "");
         return a;
     }
 }
