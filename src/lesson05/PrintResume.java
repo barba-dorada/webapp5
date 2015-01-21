@@ -10,6 +10,10 @@ import ru.javawebinar.webapp.model.TextSection;
  */
 public class PrintResume {
     public static void main(String[] args) {
+        Integer i3=new Integer(3);
+        Integer i4=new Integer(3);
+
+        System.out.println(i3==i4);
 
         /*
         http://gkislin.ru/ru/cv.html

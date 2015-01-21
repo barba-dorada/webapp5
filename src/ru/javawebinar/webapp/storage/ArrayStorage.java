@@ -18,7 +18,6 @@ public class ArrayStorage extends AbstractStorage<Integer> {
 
     public ArrayStorage() {
         super();
-        NOT_FOUND_CTX=-1;
     }
 
     protected void doClear() {
@@ -68,6 +67,11 @@ public class ArrayStorage extends AbstractStorage<Integer> {
                 }
             }
         }
-        return NOT_FOUND_CTX;
+        return -1;
+    }
+
+    @Override
+    protected boolean exist(Integer ctx) {
+        return !ctx.equals(-1);
     }
 }

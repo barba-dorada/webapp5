@@ -8,15 +8,15 @@ import java.util.*;
  * GKislin
  * 09.01.2015.
  */
-public class HashMapStorage extends AbstractStorage<Resume> {
-    public HashMapStorage() {
+public class HashMapStorage2 extends AbstractStorage<String> {
+    public HashMapStorage2() {
     }
 
     Map<String, Resume> map = new HashMap<>();
 
     @Override
-    protected void doSave(Resume r,Resume ctx) {
-        map.put(r.getUuid(), r);
+    protected void doSave(Resume r,String ctx) {
+        map.put(ctx, r);
     }
 
     @Override
@@ -25,18 +25,18 @@ public class HashMapStorage extends AbstractStorage<Resume> {
     }
 
     @Override
-    protected void doUpdate(Resume r,Resume ctx) {
-        map.put(r.getUuid(), r);
+    protected void doUpdate(Resume r,String ctx) {
+        map.put(ctx, r);
     }
 
     @Override
-    protected Resume doLoad(String uuid,Resume ctx) {
-        return ctx;
+    protected Resume doLoad(String uuid,String ctx) {
+        return map.get(ctx);
     }
 
     @Override
-    protected void doDelete(String uuid,Resume ctx) {
-        map.remove(uuid);
+    protected void doDelete(String uuid,String ctx) {
+        map.remove(ctx);
     }
 
     @Override
@@ -52,12 +52,12 @@ public class HashMapStorage extends AbstractStorage<Resume> {
     }
 
     @Override
-    Resume getContext(String uuid) {
-        return map.get(uuid);
+    String getContext(String uuid) {
+        return uuid;
     }
 
     @Override
-    protected boolean exist(Resume ctx) {
-        return ctx!=null;
+    protected boolean exist(String ctx) {
+        return map.containsKey(ctx);
     }
 }

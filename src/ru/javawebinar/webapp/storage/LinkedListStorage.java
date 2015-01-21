@@ -15,7 +15,6 @@ public class LinkedListStorage extends AbstractStorage<Integer> {
     List<Resume> list = new LinkedList<>();
 
     public LinkedListStorage() {
-        NOT_FOUND_CTX = -1;
     }
 
     @Override
@@ -59,5 +58,10 @@ public class LinkedListStorage extends AbstractStorage<Integer> {
     Integer getContext(String uuid) {
         Resume resume = new Resume(uuid, "", "");
         return list.indexOf(resume);
+    }
+
+    @Override
+    protected boolean exist(Integer ctx) {
+        return !ctx.equals(-1);
     }
 }

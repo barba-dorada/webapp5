@@ -9,15 +9,16 @@ import ru.javawebinar.webapp.model.Resume;
  */
 abstract public class AbstractStorage<T> implements IStorage {
     protected LoggerWrapper logger = LoggerWrapper.get(getClass());
-    T NOT_FOUND_CTX;
 
     @Override
     public void save(Resume r) {
         logger.info("Save resume", r.getUuid());
         T ctx = getContext(r.getUuid());
-        if (ctx != NOT_FOUND_CTX) throw logger.getWebAppException("Resume already exist", r);
+        if (exist(ctx)) throw logger.getWebAppException("Resume already exist", r);
         doSave(r, ctx);
     }
+
+    abstract protected boolean exist(T ctx);
 
     protected abstract void doSave(Resume r, T ctx);
 
@@ -33,7 +34,7 @@ abstract public class AbstractStorage<T> implements IStorage {
     public void update(Resume r) {
         logger.info("Update resume", r.getUuid());
         T ctx = getContext(r.getUuid());
-        if (ctx == NOT_FOUND_CTX) throw logger.getWebAppException("Resume not exist", r);
+        if (!exist(ctx)) throw logger.getWebAppException("Resume not exist", r);
         doUpdate(r, ctx);
     }
 
@@ -43,7 +44,7 @@ abstract public class AbstractStorage<T> implements IStorage {
     public Resume load(String uuid) {
         logger.info("Load resume", uuid);
         T ctx = getContext(uuid);
-        if (ctx == NOT_FOUND_CTX) throw logger.getWebAppException("Resume not exist", uuid);
+        if (!exist(ctx)) throw logger.getWebAppException("Resume not exist", uuid);
         return doLoad(uuid, ctx);
     }
 
@@ -53,7 +54,7 @@ abstract public class AbstractStorage<T> implements IStorage {
     public void delete(String uuid) {
         logger.info("Delete resume", uuid);
         T ctx = getContext(uuid);
-        if (ctx == NOT_FOUND_CTX) throw logger.getWebAppException("Resume not exist", uuid);
+        if (!exist(ctx)) throw logger.getWebAppException("Resume not exist", uuid);
         doDelete(uuid, ctx);
     }
 
