@@ -8,7 +8,7 @@ import ru.javawebinar.webapp.model.TextSection;
 /**
  * Created by vad on 20.01.2015.
  */
-public class PrintPerson {
+public class PrintResume {
     public static void main(String[] args) {
 
         /*
