@@ -29,11 +29,11 @@ public abstract class AbstractStorageTest {
         R1 = new Resume("Полное Имя1", "location1");
         R1.addContact(ContactType.MAIL, "mail1@ya.ru");
         R1.addContact(ContactType.PHONE, "11111");
-        R2 = new Resume("Полное Имя2", null);
+        R2 = new Resume("Полное Имя2", "location2");
         R2.addContact(ContactType.SKYPE, "skype2");
         R2.addContact(ContactType.PHONE, "22222");
-        R3 = new Resume("Полное Имя3", null);
-        R4 = new Resume("Полное Имя4", null);
+        R3 = new Resume("Полное Имя3", "location3");
+        R4 = new Resume("Полное Имя4", "location4");
         storage.clear();
         storage.save(R3);
         storage.save(R1);
