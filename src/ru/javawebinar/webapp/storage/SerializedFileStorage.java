@@ -1,6 +1,5 @@
 package ru.javawebinar.webapp.storage;
 
-import ru.javawebinar.webapp.WebAppException;
 import ru.javawebinar.webapp.model.Resume;
 
 import java.io.*;
@@ -15,38 +14,19 @@ public class SerializedFileStorage extends FileStorage {
     }
 
     @Override
-    public Resume read(File file) {
-
-        try(FileInputStream fis = new FileInputStream(file);
-        ObjectInputStream oin = new ObjectInputStream(fis)){
+    public Resume read(FileInputStream fis) throws IOException, ClassNotFoundException {
+        try (ObjectInputStream oin = new ObjectInputStream(fis)) {
             Resume r = (Resume) oin.readObject();
             return r;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
-        throw new WebAppException("IO");
     }
 
     @Override
-    public void write(Resume r, File file) {
-
-        try (
-                FileOutputStream fos = new FileOutputStream(file);
-                ObjectOutputStream oos = new ObjectOutputStream(fos)
-        ) {
+    public void write(Resume r, FileOutputStream out) throws IOException {
+        try (ObjectOutputStream oos = new ObjectOutputStream(out)) {
             oos.writeObject(r);
             oos.flush();
             oos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
-
     }
 }

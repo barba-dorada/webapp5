@@ -47,10 +47,25 @@ abstract public class FileStorage extends AbstractStorage<File> {
         return read(file);
     }
 
-    abstract public Resume read(File file);
+    public Resume read(File file) {
+        try (FileInputStream fis = new FileInputStream(file)) {
+            return read(fis);
+        } catch (IOException | ClassNotFoundException e) {
+            throw logger.getWebAppException("read uuid(" + file.getName() + ")", e);
+        }
+    }
 
-    abstract public void write(Resume r, File file);
+    abstract public Resume read(FileInputStream is)  throws IOException, ClassNotFoundException;
 
+    public void write(Resume r, File file) {
+        try (FileOutputStream out = new FileOutputStream(file)) {
+            write(r, out);
+        } catch (IOException e) {
+            throw logger.getWebAppException("write uuid(" + r.getUuid() + ")", e);
+        }
+    }
+
+    abstract public void write(Resume r, FileOutputStream out) throws IOException;
 
     @Override
     protected void doDelete(String uuid, File file) {

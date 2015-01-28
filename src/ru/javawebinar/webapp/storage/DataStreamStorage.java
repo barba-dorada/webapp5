@@ -16,13 +16,13 @@ public class DataStreamStorage extends FileStorage {
 
     public DataStreamStorage(String path) {
         super(path);
-        //dir.isDirectory()
     }
 
+
+
     @Override
-    public Resume read(File file) {
-        try (ObjectInputStream ois =
-                     new ObjectInputStream(new FileInputStream(file))) {
+    public Resume read(FileInputStream is) throws IOException, ClassNotFoundException {
+        try( ObjectInputStream ois = new ObjectInputStream(is)) {
             String uuid0 = ois.readUTF();
             String fullName = ois.readUTF();
             String location = ois.readUTF();
@@ -35,35 +35,31 @@ public class DataStreamStorage extends FileStorage {
             }
             delimiter = ois.readUTF();
             if (!"sections".equals(delimiter)) throw new WebAppException("Storage, FormatError");
-            count=ois.readInt();
+            count = ois.readInt();
 
             for (int i = 0; i < count; i++) {
-                r.addSection(SectionType.valueOf(ois.readUTF()),(Section) ois.readObject());
+                r.addSection(SectionType.valueOf(ois.readUTF()), (Section) ois.readObject());
             }
-
-
-
 
             delimiter = ois.readUTF();
             if (!"end".equals(delimiter)) throw new WebAppException("Storage, FormatError");
 
             return r;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
-        //TODO add throw?
-        return null;
     }
 
     @Override
     public void write(Resume r, File file) {
-        try (
-                FileOutputStream out = new FileOutputStream(file);
-                ObjectOutputStream oout = new ObjectOutputStream(out)) {
+        try (FileOutputStream out = new FileOutputStream(file)) {
+            write(r, out);
+        } catch (IOException e) {
+            throw logger.getWebAppException("read uuid(" + r.getUuid() + ")", e);
+        }
+    }
+
+    public void write(Resume r, FileOutputStream out) throws IOException {
+
+        try(ObjectOutputStream oout = new ObjectOutputStream(out)) {
 
             oout.writeUTF(r.getUuid());
             oout.writeUTF(r.getFullName());
@@ -79,16 +75,13 @@ public class DataStreamStorage extends FileStorage {
             oout.writeUTF("sections");
             Map<SectionType, Section> sections = r.getSections();
             oout.writeInt(sections.size());
-            for(Map.Entry<SectionType,Section> es:sections.entrySet()){
+            for (Map.Entry<SectionType, Section> es : sections.entrySet()) {
                 oout.writeUTF(es.getKey().name());
                 oout.writeObject(es.getValue());
             }
             oout.writeUTF("end");
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
+
+
