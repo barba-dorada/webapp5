@@ -1,10 +1,13 @@
 package ru.javawebinar.webapp.model;
 
+import java.io.Serializable;
+
 /**
  * GKislin
  * 26.12.2014.
  */
-public enum ContactType {
+public enum ContactType implements Serializable{
+
     PHONE("Тел."),
     MOBILE("Мобильный"),
     HOME_PHONE("Домашний тел."),

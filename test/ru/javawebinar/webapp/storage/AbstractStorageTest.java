@@ -4,10 +4,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.webapp.WebAppException;
-import ru.javawebinar.webapp.model.ContactType;
-import ru.javawebinar.webapp.model.Resume;
+import ru.javawebinar.webapp.model.*;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -33,6 +33,8 @@ public abstract class AbstractStorageTest {
         R2.addContact(ContactType.SKYPE, "skype2");
         R2.addContact(ContactType.PHONE, "22222");
         R3 = new Resume("Полное Имя3", "location3");
+        R3.addSection(SectionType.OBJECTIVE,new TextSection("позиция 3","комент"));
+        R3.addSection(SectionType.EXPERIENCE,new MultiTextSection("qqqq","wwwww"));
         R4 = new Resume("Полное Имя4", "location4");
         storage.clear();
         storage.save(R3);
@@ -63,6 +65,14 @@ public abstract class AbstractStorageTest {
         R2.setFullName("Updated N2");
         storage.update(R2);
         assertEquals(R2, storage.load(R2.getUuid()));
+    }
+
+    @Test
+    public void testUpdateSection() throws Exception {
+        R3.addSection(SectionType.OBJECTIVE,new TextSection("позиция 4","комент5"));
+        R3.addSection(SectionType.EXPERIENCE,new MultiTextSection("new Exp","new Exp2"));
+        storage.update(R3);
+        assertEquals(R3, storage.load(R3.getUuid()));
     }
 
     @Test(expected = WebAppException.class)

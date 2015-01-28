@@ -1,44 +1,50 @@
 package lesson05;
 
-import ru.javawebinar.webapp.model.ContactType;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import ru.javawebinar.webapp.model.MultiTextSection;
 import ru.javawebinar.webapp.model.Resume;
-import ru.javawebinar.webapp.model.SectionType;
 import ru.javawebinar.webapp.model.TextSection;
+
+import static ru.javawebinar.webapp.model.ContactType.*;
+import static ru.javawebinar.webapp.model.SectionType.*;
 
 /**
  * Created by vad on 20.01.2015.
  */
 public class PrintResume {
     public static void main(String[] args) {
-        Integer i3=new Integer(3);
-        Integer i4=new Integer(3);
+        Integer i3 = new Integer(3);
+        Integer i4 = new Integer(3);
 
-        System.out.println(i3==i4);
+        System.out.println(i3 == i4);
 
         /*
         http://gkislin.ru/ru/cv.html
          */
-        Resume p = new Resume( "Кислин Григорий", "Россия, г. Санкт-Петербург");
-        p.addContact(ContactType.HOME_PAGE, "http://gkislin.ru");
+        Resume p = new Resume("Кислин Григорий", "Россия, г. Санкт-Петербург");
+        p.addContact(HOME_PAGE, "http://gkislin.ru");
         // Проживание: Россия, г. Санкт-Петербург
-        p.addContact(ContactType.MOBILE, "+7 (921) 855 0482");
-        p.addContact(ContactType.MAIL, "gkislin@yandex.ru");
-        p.addContact(ContactType.SKYPE, "grigory.kislin");
+        p.addContact(MOBILE, "+7 (921) 855 0482");
+        p.addContact(MAIL, "gkislin@yandex.ru");
+        p.addContact(SKYPE, "grigory.kislin");
 
-        p.addSection(SectionType.OBJECTIVE,new TextSection("Архитектор/ Технический лидер/ Старший Scala/Java разработчик",""));
+        p.addSection(OBJECTIVE, new TextSection("Архитектор/ Технический лидер/ Старший Scala/Java разработчик", ""));
 
-        p.addSection(SectionType.ACHIEVEMENT,new TextSection( "Разработка и проведение Java тренингов", ""));
-        p.addSection(SectionType.ACHIEVEMENT, new TextSection("Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. ", ""));
+        p.addSection(ACHIEVEMENT, mts(
+                "Разработка и проведение Java тренингов",
+                "Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. "));
 
-        p.addSection(SectionType.QUALIFICATIONS, new TextSection("JEE AS...", ""));
-        p.addSection(SectionType.QUALIFICATIONS,new TextSection( "Frameworks...", ""));
+        p.addSection(QUALIFICATIONS, mts("JEE AS...", "Frameworks..."));
 
-        p.addSection(SectionType.EXPERIENCE,new TextSection( "RIT Center", "Java архитектор"));
-        p.addSection(SectionType.EXPERIENCE,new TextSection( "Basis Capital", "Системный архитектор"));
+        p.addSection(EXPERIENCE, mts("RIT Center", "Java архитектор",
+                "Basis Capital", "Системный архитектор"));
 
-        p.addSection(SectionType.EDUCATION,new TextSection( "Luxoft", "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML."));
-        p.addSection(SectionType.EDUCATION,new TextSection( "Институт Точной Механики и Оптики (Технический университет)",
-                "Аспирантура"));
+        p.addSection(EDUCATION, mts("Luxoft",
+                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.",
+                "Институт Точной Механики и Оптики (Технический университет)", "Аспирантура"));
+
+
 
 /*
 Опыт работы
@@ -59,6 +65,26 @@ Luxoft
 */
 
         p.print();
+        //    testGSON(p);
+
+
+    }
+
+    protected static void testGSON(Resume p) {
+        //DwarvesBand band = BandUtil.createBand();
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
+        String json = gson.toJson(p);
+        System.out.println(json);
+
+        Resume r2 = gson.fromJson(json, Resume.class);
+        r2.print();
+    }
+
+    static MultiTextSection mts(String... args) {
+        MultiTextSection sec = new MultiTextSection(args);
+        return sec;
     }
 
 

@@ -6,7 +6,7 @@ package ru.javawebinar.webapp.storage;
  */
 public class DataStreamStorageTest extends AbstractStorageTest {
     public DataStreamStorageTest() {
-        storage=  new DataStreamStorage("./datastore");
+        storage=  new DataStreamStorage("./datastore/ds");
     }
 
 }

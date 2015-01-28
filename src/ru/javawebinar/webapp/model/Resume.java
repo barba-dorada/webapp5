@@ -1,43 +1,34 @@
 package ru.javawebinar.webapp.model;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * gkislin
  * 12.12.2014.
  */
-public final class Resume implements Comparable<Resume> {
+public final class Resume implements Comparable<Resume>,Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private final String uuid;
     private String fullName;
     private String location;
-    //private String homePage;
-    private Map<ContactType,String> contacts = new HashMap<>();
-    private Map<SectionType,List<Section>> sections = new HashMap<>();
+    private Map<ContactType,String> contacts =new EnumMap<>(ContactType.class);
+    private Map<SectionType,Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName, String location) {
         this(UUID.randomUUID().toString(), fullName, location);
     }
 
     public Resume(String uuid, String fullName, String location) {
-        sectionsInit();
         this.uuid = uuid;
         this.fullName = fullName;
         this.location = location;
     }
-private void sectionsInit(){
-    for(SectionType sectionType:SectionType.values()){
-        sections.put(sectionType,new LinkedList<Section>());
-    }
-
-}
     public void addSection(SectionType type,Section section) {
-        sections.get(type).add(section);
+        sections.put(type, section);
     }
-
-//    public void addSection(Section section) {
-//        sections.get(section.type).add(section);
-//    }
-
 
     public void addContact(ContactType type, String value) {
         contacts.put(type, value);
@@ -55,15 +46,11 @@ private void sectionsInit(){
         return location;
     }
 
-//    public String getHomePage() {
-//        return homePage;
-//    }
-
     public Map<ContactType,String> getContacts() {
         return contacts;
     }
 
-    public  Map<SectionType,List<Section>> getSections() {
+    public  Map<SectionType,Section> getSections() {
         return sections;
     }
 
@@ -75,25 +62,26 @@ private void sectionsInit(){
         this.location = location;
     }
 
-//    public void setHomePage(String homePage) {
-//        this.homePage = homePage;
-//    }
-
     @Override
     public int hashCode() {
         return uuid.hashCode();
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        final Resume other = (Resume) obj;
-        return other.uuid.equals(uuid);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Resume resume = (Resume) o;
+
+        if (!uuid.equals(resume.uuid)) return false;
+        if (!fullName.equals(resume.fullName)) return false;
+
+        if (!contacts.equals(resume.contacts)) return false;
+        if (!location.equals(resume.location)) return false;
+        if (sections != null ? !sections.equals(resume.sections) : resume.sections != null) return false;
+
+        return true;
     }
 
     @Override
@@ -104,23 +92,18 @@ private void sectionsInit(){
         printHeader();
         printContacts();
         printSections();
-
     }
 
     private void printSections() {
         for(SectionType sectionType:SectionType.values()){
-            System.out.println("__"+sectionType.getTitle()+"__");
-            List<Section> list = sections.get(sectionType);
-            if(list.size()>0){
-                for(Section s:list){
-                    System.out.println(s);
-                }
-
+            System.out.println("=="+sectionType.getTitle()+"===================");
+            Section section = sections.get(sectionType);
+                    System.out.print(section);
             }
-        }
     }
 
     private void printContacts() {
+        System.out.println("==контакты===================");
         for (ContactType contactType:contacts.keySet()) {
             String val=contacts.get(contactType);
             if (val != null) {

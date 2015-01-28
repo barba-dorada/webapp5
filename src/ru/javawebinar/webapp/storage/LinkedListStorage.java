@@ -2,10 +2,7 @@ package ru.javawebinar.webapp.storage;
 
 import ru.javawebinar.webapp.model.Resume;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by vad on 10.01.2015.
@@ -56,8 +53,12 @@ public class LinkedListStorage extends AbstractStorage<Integer> {
 
     @Override
     Integer getContext(String uuid) {
-        Resume resume = new Resume(uuid, "", "");
-        return list.indexOf(resume);
+        for (int i = 0; i <size() ; i++) {
+            if(list.get(i).getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
