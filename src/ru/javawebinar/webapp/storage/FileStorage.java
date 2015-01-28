@@ -50,12 +50,12 @@ abstract public class FileStorage extends AbstractStorage<File> {
     public Resume read(File file) {
         try (FileInputStream fis = new FileInputStream(file)) {
             return read(fis);
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException  e) {
             throw logger.getWebAppException("read uuid(" + file.getName() + ")", e);
         }
     }
 
-    abstract public Resume read(FileInputStream is)  throws IOException, ClassNotFoundException;
+    abstract public Resume read(FileInputStream is)  throws IOException;
 
     public void write(Resume r, File file) {
         try (FileOutputStream out = new FileOutputStream(file)) {

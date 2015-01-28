@@ -21,14 +21,14 @@ public class DataStreamStorage extends FileStorage {
 
 
     @Override
-    public Resume read(FileInputStream is) throws IOException, ClassNotFoundException {
-        try( ObjectInputStream ois = new ObjectInputStream(is)) {
-            String uuid0 = ois.readUTF();
+    public Resume read(FileInputStream is) throws IOException {
+        try( DataInputStream ois = new DataInputStream(is)) {
+            String uuid = ois.readUTF();
             String fullName = ois.readUTF();
             String location = ois.readUTF();
             String delimiter = ois.readUTF();
             if (!delimiter.equals("contacts")) throw new WebAppException("Storage, FormatError");
-            Resume r = new Resume(uuid0, fullName, location);
+            Resume r = new Resume(uuid, fullName, location);
             int count = ois.readInt();
             for (int i = 0; i < count; i++) {
                 r.addContact(ContactType.valueOf(ois.readUTF()), ois.readUTF());
@@ -38,7 +38,7 @@ public class DataStreamStorage extends FileStorage {
             count = ois.readInt();
 
             for (int i = 0; i < count; i++) {
-                r.addSection(SectionType.valueOf(ois.readUTF()), (Section) ois.readObject());
+         //       r.addSection(SectionType.valueOf(ois.readUTF()), (Section) ois.readObject());
             }
 
             delimiter = ois.readUTF();
@@ -49,17 +49,9 @@ public class DataStreamStorage extends FileStorage {
     }
 
     @Override
-    public void write(Resume r, File file) {
-        try (FileOutputStream out = new FileOutputStream(file)) {
-            write(r, out);
-        } catch (IOException e) {
-            throw logger.getWebAppException("read uuid(" + r.getUuid() + ")", e);
-        }
-    }
-
     public void write(Resume r, FileOutputStream out) throws IOException {
 
-        try(ObjectOutputStream oout = new ObjectOutputStream(out)) {
+        try(DataOutputStream oout = new DataOutputStream(out)) {
 
             oout.writeUTF(r.getUuid());
             oout.writeUTF(r.getFullName());
@@ -77,7 +69,7 @@ public class DataStreamStorage extends FileStorage {
             oout.writeInt(sections.size());
             for (Map.Entry<SectionType, Section> es : sections.entrySet()) {
                 oout.writeUTF(es.getKey().name());
-                oout.writeObject(es.getValue());
+                //oout.writeObject(es.getValue());
             }
             oout.writeUTF("end");
         }

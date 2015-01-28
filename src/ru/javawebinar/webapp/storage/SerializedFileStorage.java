@@ -14,10 +14,11 @@ public class SerializedFileStorage extends FileStorage {
     }
 
     @Override
-    public Resume read(FileInputStream fis) throws IOException, ClassNotFoundException {
+    public Resume read(FileInputStream fis) throws IOException {
         try (ObjectInputStream oin = new ObjectInputStream(fis)) {
-            Resume r = (Resume) oin.readObject();
-            return r;
+            return (Resume) oin.readObject();
+        } catch (ClassNotFoundException e) {
+            throw logger.getWebAppException("",e);
         }
     }
 
@@ -25,8 +26,6 @@ public class SerializedFileStorage extends FileStorage {
     public void write(Resume r, FileOutputStream out) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(out)) {
             oos.writeObject(r);
-            oos.flush();
-            oos.close();
         }
     }
 }
