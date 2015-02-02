@@ -29,7 +29,7 @@ public class PrintResume {
         p.addContact(MAIL, "gkislin@yandex.ru");
         p.addContact(SKYPE, "grigory.kislin");
 
-        p.addSection(OBJECTIVE, new TextSection("Архитектор/ Технический лидер/ Старший Scala/Java разработчик", ""));
+        p.addSection(OBJECTIVE, new TextSection("Архитектор/ Технический лидер/ Старший Scala/Java разработчик"));
 
         p.addSection(ACHIEVEMENT, mts(
                 "Разработка и проведение Java тренингов",

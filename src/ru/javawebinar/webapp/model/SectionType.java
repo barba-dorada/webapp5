@@ -13,7 +13,7 @@ public enum SectionType implements Serializable{
     ACHIEVEMENT("Достижения"),
     QUALIFICATIONS("Квалификация"),
     EXPERIENCE("Опыт работы"),
-    EDUCATION("Образование");
+    EDUCATION("Образование") ;
 
 
 

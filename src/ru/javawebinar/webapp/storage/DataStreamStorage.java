@@ -1,12 +1,13 @@
 package ru.javawebinar.webapp.storage;
 
 import ru.javawebinar.webapp.WebAppException;
-import ru.javawebinar.webapp.model.ContactType;
-import ru.javawebinar.webapp.model.Resume;
-import ru.javawebinar.webapp.model.Section;
-import ru.javawebinar.webapp.model.SectionType;
+import ru.javawebinar.webapp.model.*;
 
 import java.io.*;
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,29 +20,69 @@ public class DataStreamStorage extends FileStorage {
     }
 
 
-
     @Override
     public Resume read(FileInputStream is) throws IOException {
-        try( DataInputStream ois = new DataInputStream(is)) {
-            String uuid = ois.readUTF();
-            String fullName = ois.readUTF();
-            String location = ois.readUTF();
-            String delimiter = ois.readUTF();
-            if (!delimiter.equals("contacts")) throw new WebAppException("Storage, FormatError");
+        try (DataInputStream ois = new DataInputStream(is)) {
+            String uuid = readStr(ois);
+            String fullName = readStr(ois);
+            String location = readStr(ois);
             Resume r = new Resume(uuid, fullName, location);
-            int count = ois.readInt();
-            for (int i = 0; i < count; i++) {
-                r.addContact(ContactType.valueOf(ois.readUTF()), ois.readUTF());
-            }
-            delimiter = ois.readUTF();
+
+
+            String delimiter = readStr(ois);
+            if (!delimiter.equals("contacts")) throw new WebAppException("Storage, FormatError");
+
+            readList(ois, () -> {
+                        r.addContact(ContactType.valueOf(readStr(ois)), readStr(ois));
+                        return null; // кривовато.
+                    }
+            );
+
+            delimiter = readStr(ois);
             if (!"sections".equals(delimiter)) throw new WebAppException("Storage, FormatError");
-            count = ois.readInt();
+            int count = ois.readInt();
 
             for (int i = 0; i < count; i++) {
-         //       r.addSection(SectionType.valueOf(ois.readUTF()), (Section) ois.readObject());
+                SectionType secType = SectionType.valueOf(readStr(ois));
+                switch (secType) {
+
+                    case OBJECTIVE:
+                        String title = readStr(ois);
+                        TextSection ts = new TextSection(title);
+                        r.addSection(secType, ts);
+                        break;
+
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        MultiTextSection mts2 = new MultiTextSection();
+                        mts2.setValues(readList(ois, ois::readUTF));
+                        r.addSection(secType, mts2);
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        List<Organization> orgList = readList(ois, () -> {
+                                    String orgTitle = readStr(ois);
+                                    String orgUrl = readStr(ois);
+                                    List<Organization.Period> periods = readList(ois, () -> {
+                                        Organization.Period p = new Organization.Period(
+                                                ois.readInt(),
+                                                Month.valueOf(readStr(ois)),
+                                                ois.readInt(),
+                                                Month.valueOf(readStr(ois)),
+                                                readStr(ois),
+                                                readStr(ois));
+                                        return p;
+                                    });
+                                    return new Organization(new Link(orgTitle, orgUrl), periods);
+                                }
+                        );
+                        OrganizationSection oSec = new OrganizationSection(orgList);
+                        r.addSection(secType, oSec);
+                        break;
+                }
             }
 
-            delimiter = ois.readUTF();
+            delimiter = readStr(ois);
             if (!"end".equals(delimiter)) throw new WebAppException("Storage, FormatError");
 
             return r;
@@ -51,29 +92,89 @@ public class DataStreamStorage extends FileStorage {
     @Override
     public void write(Resume r, FileOutputStream out) throws IOException {
 
-        try(DataOutputStream oout = new DataOutputStream(out)) {
-
-            oout.writeUTF(r.getUuid());
-            oout.writeUTF(r.getFullName());
-            oout.writeUTF(r.getLocation());
-            oout.writeUTF("contacts");
+        try (DataOutputStream oout = new DataOutputStream(out)) {
+            writeStr(oout, r.getUuid());
+            writeStr(oout, r.getFullName());
+            writeStr(oout, r.getLocation());
+            writeStr(oout, "contacts");
             Map<ContactType, String> contacts = r.getContacts();
-            oout.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> es : contacts.entrySet()) {
-                oout.writeUTF(es.getKey().name());
-                oout.writeUTF(es.getValue());
-            }
 
-            oout.writeUTF("sections");
+            writeCollection(oout, contacts.entrySet(), contact -> {
+                writeStr(oout, contact.getKey().name());
+                writeStr(oout, contact.getValue());
+            });
+
+            writeStr(oout, "sections");
             Map<SectionType, Section> sections = r.getSections();
             oout.writeInt(sections.size());
             for (Map.Entry<SectionType, Section> es : sections.entrySet()) {
-                oout.writeUTF(es.getKey().name());
-                //oout.writeObject(es.getValue());
+                SectionType key = es.getKey();
+                Section section = es.getValue();
+                writeStr(oout, key.name());
+                switch (key) {
+                    case OBJECTIVE:
+                        TextSection textSection = (TextSection) section;
+                        writeStr(oout, textSection.getValue());
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        writeCollection(oout, ((MultiTextSection) section).getValues(), s -> writeStr(oout, s));
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        writeCollection(oout, ((OrganizationSection) section).getValues(), org -> {
+                            writeStr(oout, org.getLink().getName());
+                            writeStr(oout, org.getLink().getUrl());
+                            writeCollection(oout, org.getPeriods(), period -> {
+                                oout.writeInt(period.getStartDate().getYear());
+                                writeStr(oout, period.getStartDate().getMonth().name());
+                                oout.writeInt(period.getEndDate().getYear());
+                                writeStr(oout, period.getEndDate().getMonth().name());
+                                writeStr(oout, period.getPosition());
+                                writeStr(oout, period.getContent());
+                            });
+                        });
+                        break;
+                }
             }
-            oout.writeUTF("end");
+            writeStr(oout, "end");
         }
     }
+
+    private <T> List<T> readList(DataInputStream dis, ElementReader<T> reader) throws IOException {
+        int size = dis.readInt();
+        List<T> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(reader.read());
+        }
+        return list;
+    }
+
+    private <T> void writeCollection(DataOutputStream dos, Collection<T> collection, ElementWriter<T> writer) throws IOException {
+        dos.writeInt(collection.size());
+        for (T item : collection) {
+            writer.write(item);
+        }
+    }
+
+    void writeStr(DataOutputStream dos, String str) throws IOException {
+        if (str == null) str = "NULL";
+        dos.writeUTF(str);
+    }
+
+    String readStr(DataInputStream dis) throws IOException {
+        String s = dis.readUTF();
+        return "NULL".equals(s) ? null : s;
+    }
+
+    private interface ElementWriter<T> {
+        void write(T t) throws IOException;
+    }
+
+    private interface ElementReader<T> {
+        T read() throws IOException;
+    }
+
 }
 
 

@@ -1,6 +1,7 @@
 package ru.javawebinar.webapp.model;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -9,7 +10,8 @@ import java.util.StringJoiner;
  * 26.12.2014.
  */
 public class MultiTextSection extends Section {
-    private List<String> values;
+    private List<String> values=new LinkedList<>();
+
 
     public MultiTextSection(String multiValue){
         values= Arrays.asList(multiValue.split("\\n"));
@@ -21,6 +23,10 @@ public class MultiTextSection extends Section {
 
     public List<String> getValues(){
         return values;
+    }
+
+    public void setValues(List<String> values) {
+        this.values = values;
     }
 
     @Override

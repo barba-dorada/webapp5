@@ -6,6 +6,8 @@ import org.junit.Test;
 import ru.javawebinar.webapp.WebAppException;
 import ru.javawebinar.webapp.model.*;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -29,12 +31,31 @@ public abstract class AbstractStorageTest {
         R1 = new Resume("Полное Имя1", "location1");
         R1.addContact(ContactType.MAIL, "mail1@ya.ru");
         R1.addContact(ContactType.PHONE, "11111");
+
+
+
         R2 = new Resume("Полное Имя2", "location2");
         R2.addContact(ContactType.SKYPE, "skype2");
         R2.addContact(ContactType.PHONE, "22222");
+
+
+        R1.addSection(SectionType.EXPERIENCE,new OrganizationSection(
+                new Organization("Organization11", "null",
+                        new Organization.Period(LocalDate.of(2005, Month.JANUARY, 1), Organization.Period.NOW, "position1", "content1"),
+                        new Organization.Period(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2")),
+                new Organization("Organization12", "http://Organization12.ru"))
+        );
+        R1.addSection(SectionType.EDUCATION, new OrganizationSection(
+                new Organization("Institute", null,
+                        new Organization.Period(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", "null"),
+                        new Organization.Period(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
+                new Organization("Organization12", "http://Organization12.ru")));
+
+
         R3 = new Resume("Полное Имя3", "location3");
-        R3.addSection(SectionType.OBJECTIVE,new TextSection("позиция 3","комент"));
-        R3.addSection(SectionType.EXPERIENCE,new MultiTextSection("qqqq","wwwww"));
+        R3.addSection(SectionType.OBJECTIVE,new TextSection("позиция 3"));
+        R3.addSection(SectionType.ACHIEVEMENT,new MultiTextSection("A1","A2","A3"));
+        R3.addSection(SectionType.QUALIFICATIONS,new MultiTextSection("qqqq","wwwww"));
         R4 = new Resume("Полное Имя4", "location4");
         storage.clear();
         storage.save(R3);
@@ -69,8 +90,8 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void testUpdateSection() throws Exception {
-        R3.addSection(SectionType.OBJECTIVE,new TextSection("позиция 4","комент5"));
-        R3.addSection(SectionType.EXPERIENCE,new MultiTextSection("new Exp","new Exp2"));
+        R3.addSection(SectionType.OBJECTIVE,new TextSection("позиция 4"));
+        R3.addSection(SectionType.QUALIFICATIONS,new MultiTextSection("new Qual1","new Qual2"));
         storage.update(R3);
         assertEquals(R3, storage.load(R3.getUuid()));
     }
