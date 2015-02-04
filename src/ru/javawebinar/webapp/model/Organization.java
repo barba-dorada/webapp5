@@ -1,12 +1,15 @@
 package ru.javawebinar.webapp.model;
 
+import ru.javawebinar.webapp.util.LocalDateAdapter;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +24,7 @@ public class Organization implements Serializable{
     private List<Period> periods;
 
     public Organization() {
+        periods=new ArrayList<>();
     }
 
     public Organization(Link link, List<Period> periods) {
@@ -46,7 +50,9 @@ public class Organization implements Serializable{
 
         public static final LocalDate NOW = LocalDate.of(3000, 1, 1);
 
+        @XmlJavaTypeAdapter( LocalDateAdapter.class )
         private LocalDate startDate;
+        @XmlJavaTypeAdapter( LocalDateAdapter.class )
         private LocalDate endDate;
         private String position;
         private String content;

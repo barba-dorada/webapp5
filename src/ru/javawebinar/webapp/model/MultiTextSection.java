@@ -13,6 +13,9 @@ public class MultiTextSection extends Section {
     private List<String> values=new LinkedList<>();
 
 
+    public MultiTextSection(){
+    }
+
     public MultiTextSection(String multiValue){
         values= Arrays.asList(multiValue.split("\\n"));
     }

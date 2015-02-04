@@ -1,5 +1,8 @@
 package ru.javawebinar.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.*;
 
@@ -7,6 +10,9 @@ import java.util.*;
  * gkislin
  * 12.12.2014.
  */
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public final class Resume implements Comparable<Resume>,Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -16,6 +22,10 @@ public final class Resume implements Comparable<Resume>,Serializable {
     private String location;
     private Map<ContactType,String> contacts =new EnumMap<>(ContactType.class);
     private Map<SectionType,Section> sections = new EnumMap<>(SectionType.class);
+
+    public Resume(){
+        this("","");
+    }
 
     public Resume(String fullName, String location) {
         this(UUID.randomUUID().toString(), fullName, location);

@@ -4,21 +4,21 @@ package ru.javawebinar.webapp.model;
  * GKislin
  * 26.12.2014.
  */
-public class TextSection extends Section{
+public class TextSection extends Section {
     private static final long serialVersionUID = 1L;
     private String title;
     //private String comment;
 
 
-//    public TextSection(SectionType type) {
-//        //super(type);
-//    }
+    public TextSection() {
+        title = "";
+    }
 
 
-    public TextSection( String title) {
+    public TextSection(String title) {
         //super(type);
         this.title = title;
-      //  this.comment=comment;
+        //  this.comment=comment;
 
     }
 
