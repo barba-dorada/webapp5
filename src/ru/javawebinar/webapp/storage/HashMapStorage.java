@@ -12,7 +12,7 @@ public class HashMapStorage extends AbstractStorage<Resume> {
     public HashMapStorage() {
     }
 
-    Map<String, Resume> map = new HashMap<>();
+    Map<String, Resume> map = Collections.synchronizedMap(new HashMap<>());
 
     @Override
     protected void doSave(Resume r,Resume ctx) {

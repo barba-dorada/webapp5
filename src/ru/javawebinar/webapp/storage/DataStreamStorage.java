@@ -4,6 +4,7 @@ import ru.javawebinar.webapp.WebAppException;
 import ru.javawebinar.webapp.model.*;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,15 +49,15 @@ public class DataStreamStorage extends FileStorage {
 
                     case OBJECTIVE:
                         String title = readStr(ois);
-                        TextSection ts = new TextSection(title);
-                        r.addSection(secType, ts);
+                        TextSection textSection = new TextSection(title);
+                        r.addSection(secType, textSection);
                         break;
 
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        MultiTextSection mts2 = new MultiTextSection();
-                        mts2.setValues(readList(ois, ois::readUTF));
-                        r.addSection(secType, mts2);
+                        MultiTextSection multiTextSection = new MultiTextSection();
+                        multiTextSection.setValues(readList(ois, ois::readUTF));
+                        r.addSection(secType, multiTextSection);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
@@ -65,10 +66,8 @@ public class DataStreamStorage extends FileStorage {
                                     String orgUrl = readStr(ois);
                                     List<Organization.Period> periods = readList(ois, () -> {
                                         Organization.Period p = new Organization.Period(
-                                                ois.readInt(),
-                                                Month.valueOf(readStr(ois)),
-                                                ois.readInt(),
-                                                Month.valueOf(readStr(ois)),
+                                                readDate(ois),
+                                                readDate(ois),
                                                 readStr(ois),
                                                 readStr(ois));
                                         return p;
@@ -76,8 +75,8 @@ public class DataStreamStorage extends FileStorage {
                                     return new Organization(new Link(orgTitle, orgUrl), periods);
                                 }
                         );
-                        OrganizationSection oSec = new OrganizationSection(orgList);
-                        r.addSection(secType, oSec);
+                        OrganizationSection organizationSection = new OrganizationSection(orgList);
+                        r.addSection(secType, organizationSection);
                         break;
                 }
             }
@@ -126,10 +125,8 @@ public class DataStreamStorage extends FileStorage {
                             writeStr(oout, org.getLink().getName());
                             writeStr(oout, org.getLink().getUrl());
                             writeCollection(oout, org.getPeriods(), period -> {
-                                oout.writeInt(period.getStartDate().getYear());
-                                writeStr(oout, period.getStartDate().getMonth().name());
-                                oout.writeInt(period.getEndDate().getYear());
-                                writeStr(oout, period.getEndDate().getMonth().name());
+                                writeDate(oout, period.getStartDate());
+                                writeDate(oout, period.getEndDate());
                                 writeStr(oout, period.getPosition());
                                 writeStr(oout, period.getContent());
                             });
@@ -141,8 +138,19 @@ public class DataStreamStorage extends FileStorage {
         }
     }
 
-    private <T> List<T> readList(DataInputStream dis, ElementReader<T> reader) throws IOException {
-        int size = dis.readInt();
+
+    private void writeDate(DataOutputStream os, LocalDate d) throws IOException {
+        os.writeInt(d.getYear());
+        writeStr(os, d.getMonth().name());
+    }
+
+    private LocalDate readDate(DataInputStream is) throws IOException {
+        return LocalDate.of(is.readInt(), Month.valueOf(readStr(is)), 1);
+    }
+
+
+    private <T> List<T> readList(DataInputStream is, ElementReader<T> reader) throws IOException {
+        int size = is.readInt();
         List<T> list = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             list.add(reader.read());
@@ -150,20 +158,20 @@ public class DataStreamStorage extends FileStorage {
         return list;
     }
 
-    private <T> void writeCollection(DataOutputStream dos, Collection<T> collection, ElementWriter<T> writer) throws IOException {
-        dos.writeInt(collection.size());
+    private <T> void writeCollection(DataOutputStream os, Collection<T> collection, ElementWriter<T> writer) throws IOException {
+        os.writeInt(collection.size());
         for (T item : collection) {
             writer.write(item);
         }
     }
 
-    void writeStr(DataOutputStream dos, String str) throws IOException {
+    void writeStr(DataOutputStream os, String str) throws IOException {
         if (str == null) str = "NULL";
-        dos.writeUTF(str);
+        os.writeUTF(str);
     }
 
-    String readStr(DataInputStream dis) throws IOException {
-        String s = dis.readUTF();
+    String readStr(DataInputStream is) throws IOException {
+        String s = is.readUTF();
         return "NULL".equals(s) ? null : s;
     }
 
