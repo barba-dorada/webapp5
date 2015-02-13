@@ -57,4 +57,15 @@ public class MultiTextSection extends Section {
     public int hashCode() {
         return values.hashCode();
     }
+
+    @Override
+    public String toHtml() {
+        StringBuilder sb=new StringBuilder();
+        sb.append("<div class='mtext'>");
+        for(String s:values){
+            sb.append("<div class='mtrow'>").append(s).append("</div>");
+        }
+        sb.append("</div>");
+        return sb.toString();
+    }
 }

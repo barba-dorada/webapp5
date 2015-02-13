@@ -42,6 +42,17 @@ public class Organization implements Serializable{
         this.periods = Arrays.asList(periods);
     }
 
+    public String toHtml() {
+        StringBuilder sb=new StringBuilder();
+        sb.append("<div class='organization'>");
+        sb.append("<div class='orgname'><a href='"+link.getUrl()+"'>"+link.getName()+"</a></div>");
+        for (Period period : periods) {
+            sb.append(period.toHtml());
+        }
+        sb.append("</div>");
+        return sb.toString();
+    }
+
 
 
     @XmlAccessorType(XmlAccessType.FIELD)
@@ -119,6 +130,10 @@ public class Organization implements Serializable{
                     ", position='" + position + '\'' +
                     ", content='" + content + '\'' +
                     '}';
+        }
+
+        public String toHtml() {
+            return "<div class='period'>"+toString()+"</div>";
         }
     }
 

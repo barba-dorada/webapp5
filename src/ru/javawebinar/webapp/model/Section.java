@@ -9,6 +9,7 @@ import java.io.Serializable;
  * 19.12.2014.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Section implements Serializable {
+public abstract class Section implements Serializable {
     private static final long serialVersionUID = 1L;
+    abstract public String toHtml();
 }

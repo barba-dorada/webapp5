@@ -7,8 +7,6 @@ package ru.javawebinar.webapp.model;
 public class TextSection extends Section {
     private static final long serialVersionUID = 1L;
     private String title;
-    //private String comment;
-
 
     public TextSection() {
         title = "";
@@ -16,10 +14,7 @@ public class TextSection extends Section {
 
 
     public TextSection(String title) {
-        //super(type);
         this.title = title;
-        //  this.comment=comment;
-
     }
 
     public String getValue() {
@@ -38,7 +33,6 @@ public class TextSection extends Section {
 
         TextSection that = (TextSection) o;
 
-
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
 
         return true;
@@ -47,7 +41,11 @@ public class TextSection extends Section {
     @Override
     public int hashCode() {
         int result = title != null ? title.hashCode() : 0;
-
         return result;
+    }
+
+    @Override
+    public String toHtml() {
+        return "<div class='textsec'>"+title+"</div>";
     }
 }

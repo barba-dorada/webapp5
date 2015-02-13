@@ -50,4 +50,13 @@ public class OrganizationSection extends Section {
                 "values=" + values +
                 '}';
     }
+
+    @Override
+    public String toHtml(){
+        StringBuilder sb=new StringBuilder();
+        for (Organization org : values) {
+            sb.append(org.toHtml()).append("<br/>");
+        }
+        return sb.toString();
+    }
 }
