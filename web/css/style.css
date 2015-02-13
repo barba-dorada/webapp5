@@ -84,9 +84,15 @@ td {
 }
 
 .period {
+    display:table-row;
     border: solid 1px green ;
     padding: 2px;
     margin: 2px;
+}
+
+.period > div {
+    display:table-cell;
+    border: solid 1px #a2ff2d;
 }
 
 .organization{

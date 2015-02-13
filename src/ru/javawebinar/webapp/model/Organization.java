@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,14 +18,14 @@ import java.util.List;
  * 19.12.2014.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Organization implements Serializable{
+public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Link link;
     private List<Period> periods;
 
     public Organization() {
-        periods=new ArrayList<>();
+        periods = new ArrayList<>();
     }
 
     public Organization(Link link, List<Period> periods) {
@@ -32,20 +33,20 @@ public class Organization implements Serializable{
         this.periods = periods;
     }
 
-    public Organization(Link link, Period ... periods) {
+    public Organization(Link link, Period... periods) {
         this.link = link;
         this.periods = Arrays.asList(periods);
     }
 
-    public Organization(String s1,String s2, Period ... periods) {
-        this.link = new Link(s1,s2);
+    public Organization(String s1, String s2, Period... periods) {
+        this.link = new Link(s1, s2);
         this.periods = Arrays.asList(periods);
     }
 
     public String toHtml() {
-        StringBuilder sb=new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         sb.append("<div class='organization'>");
-        sb.append("<div class='orgname'><a href='"+link.getUrl()+"'>"+link.getName()+"</a></div>");
+        sb.append("<div class='orgname'><a href='" + link.getUrl() + "'>" + link.getName() + "</a></div>");
         for (Period period : periods) {
             sb.append(period.toHtml());
         }
@@ -53,17 +54,49 @@ public class Organization implements Serializable{
         return sb.toString();
     }
 
+    public Link getLink() {
+        return link;
+    }
 
+    public List<Period> getPeriods() {
+        return periods;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Organization)) return false;
+
+        Organization that = (Organization) o;
+
+        if (!link.equals(that.link)) return false;
+        if (!periods.equals(that.periods)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = link.hashCode();
+        result = 31 * result + periods.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Organization{" +
+                "link=" + link +
+                ", periods=" + periods +
+                '}';
+    }
 
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Period implements Serializable {
-        static final long serialVersionUID = 1L;
-
         public static final LocalDate NOW = LocalDate.of(3000, 1, 1);
-
-        @XmlJavaTypeAdapter( LocalDateAdapter.class )
+        static final long serialVersionUID = 1L;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate startDate;
-        @XmlJavaTypeAdapter( LocalDateAdapter.class )
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate endDate;
         private String position;
         private String content;
@@ -133,43 +166,20 @@ public class Organization implements Serializable{
         }
 
         public String toHtml() {
-            return "<div class='period'>"+toString()+"</div>";
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy LLLL");
+            StringBuilder sb = new StringBuilder();
+            sb.append("<div class='period'><div>");
+            sb.append(startDate.format(dtf)).append("-");
+            sb.append(endDate.equals(NOW) ? "сейчас" : endDate.format(dtf)).append("</div>");
+            sb.append("<div>").append(position).append(":").append(content).append("</div>");
+            sb.append("</div>");
+            return sb.toString();
         }
-    }
-
-    public Link getLink() {
-        return link;
-    }
-
-    public List<Period> getPeriods() {
-        return periods;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Organization)) return false;
-
-        Organization that = (Organization) o;
-
-        if (!link.equals(that.link)) return false;
-        if (!periods.equals(that.periods)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = link.hashCode();
-        result = 31 * result + periods.hashCode();
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Organization{" +
-                "link=" + link +
-                ", periods=" + periods +
-                '}';
+        String div(String text,String clazz){
+            return text;
+        }
+        StringBuilder div(StringBuilder sb, String clazz){
+            return sb.insert(0,"<div class='"+clazz+"'>").append("</div>");
+        }
     }
 }
