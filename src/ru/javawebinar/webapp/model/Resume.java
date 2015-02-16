@@ -43,6 +43,10 @@ public final class Resume implements Comparable<Resume>,Serializable {
     public void addContact(ContactType type, String value) {
         contacts.put(type, value);
     }
+    public String getContact(ContactType type){
+        return contacts.get(type);
+    }
+
 
     public String getUuid() {
         return uuid;

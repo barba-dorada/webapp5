@@ -48,7 +48,6 @@ public class ArrayStorage extends AbstractStorage<Integer> {
 
     @Override
     public Collection<Resume> getAllSorted() {
-        // TODO via comparator
         Arrays.sort(array, 0, size);
         return Arrays.asList(Arrays.copyOf(array, size));
     }
@@ -75,3 +74,5 @@ public class ArrayStorage extends AbstractStorage<Integer> {
         return !ctx.equals(-1);
     }
 }
+
+

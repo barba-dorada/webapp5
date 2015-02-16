@@ -62,4 +62,13 @@ abstract public class AbstractStorage<T> implements IStorage {
 
     abstract T getContext(String uuid);
 
+    @Override
+    public boolean isSectionSupported() {
+        return true;
+    }
+
+    @Override
+    public boolean isContactSupported() {
+        return true;
+    }
 }
