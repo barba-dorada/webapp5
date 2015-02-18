@@ -48,4 +48,14 @@ public class TextSection extends Section {
     public String toHtml() {
         return "<div class='textsec'>"+title+"</div>";
     }
+
+    @Override
+    public String getContent() {
+        return title;
+    }
+
+    @Override
+    public void setContent(String content) {
+        title=content;
+    }
 }

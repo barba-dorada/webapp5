@@ -12,4 +12,10 @@ import java.io.Serializable;
 public abstract class Section implements Serializable {
     private static final long serialVersionUID = 1L;
     abstract public String toHtml();
+    public String getContent(){
+        return "content";
+    }
+    public void setContent(String content){
+
+    }
 }

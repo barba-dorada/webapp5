@@ -68,4 +68,15 @@ public class MultiTextSection extends Section {
         sb.append("</div>");
         return sb.toString();
     }
+
+    @Override
+    public String getContent() {
+        return String.join("\r\n", values);
+    }
+
+    @Override
+    public void setContent(String content) {
+        values.clear();
+        values.addAll(Arrays.asList(content.split("\r?\n")));
+    }
 }

@@ -76,7 +76,8 @@ public class SqlStorage implements IStorage {
 
     @Override
     public Collection<Resume> getAllSorted() {
-        List<Resume> resultList = sql.execute("SELECT uuid, full_name, location FROM resume ORDER BY full_name, uuid",
+        List<Resume> resultList = sql.execute(
+                "SELECT uuid, full_name, location FROM resume ORDER BY full_name, uuid",
                 st -> {
                     List<Resume> list = new LinkedList<>();
                     ResultSet rs = st.executeQuery();
