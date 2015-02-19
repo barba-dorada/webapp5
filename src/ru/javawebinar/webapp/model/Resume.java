@@ -4,7 +4,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.util.*;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * gkislin
@@ -13,18 +15,18 @@ import java.util.*;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class Resume implements Comparable<Resume>,Serializable {
+public final class Resume implements Comparable<Resume>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private final String uuid;
     private String fullName;
     private String location;
-    private Map<ContactType,String> contacts =new EnumMap<>(ContactType.class);
-    private Map<SectionType,Section> sections = new EnumMap<>(SectionType.class);
+    private Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+    private Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
-    public Resume(){
-        this("","");
+    public Resume() {
+        this("", "");
     }
 
     public Resume(String fullName, String location) {
@@ -36,17 +38,20 @@ public final class Resume implements Comparable<Resume>,Serializable {
         this.fullName = fullName;
         this.location = location;
     }
-    public void addSection(SectionType type,Section section) {
+
+    public void addSection(SectionType type, Section section) {
         sections.put(type, section);
     }
-    public Section getSection(SectionType type){
-        return sections.get(type);
+
+    public Section getSection(SectionType type) {
+        return sections.containsKey(type) ? sections.get(type) : Section.ZERO;
     }
 
     public void addContact(ContactType type, String value) {
         contacts.put(type, value);
     }
-    public String getContact(ContactType type){
+
+    public String getContact(ContactType type) {
         return contacts.get(type);
     }
 
@@ -59,24 +64,24 @@ public final class Resume implements Comparable<Resume>,Serializable {
         return fullName;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public Map<ContactType,String> getContacts() {
-        return contacts;
-    }
-
-    public  Map<SectionType,Section> getSections() {
-        return sections;
-    }
-
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
+
+    public Map<SectionType, Section> getSections() {
+        return sections;
     }
 
     @Override
@@ -105,34 +110,35 @@ public final class Resume implements Comparable<Resume>,Serializable {
     public int compareTo(Resume o) {
         return fullName.compareTo(o.fullName);
     }
-    public void print(){
+
+    public void print() {
         printHeader();
         printContacts();
         printSections();
     }
 
     private void printSections() {
-        for(SectionType sectionType:SectionType.values()){
-            System.out.println("=="+sectionType.getTitle()+"===================");
+        for (SectionType sectionType : SectionType.values()) {
+            System.out.println("==" + sectionType.getTitle() + "===================");
             Section section = sections.get(sectionType);
-                    System.out.print(section);
-            }
+            System.out.print(section);
+        }
     }
 
     private void printContacts() {
         System.out.println("==контакты===================");
-        for (ContactType contactType:contacts.keySet()) {
-            String val=contacts.get(contactType);
+        for (ContactType contactType : contacts.keySet()) {
+            String val = contacts.get(contactType);
             if (val != null) {
-                System.out.println(contactType.getTitle()+":"+val);
+                System.out.println(contactType.getTitle() + ":" + val);
             }
         }
     }
 
     private void printHeader() {
-        System.out.println( "uuid='" + uuid + '\'' +
+        System.out.println("uuid='" + uuid + '\'' +
                 ", fullName='" + fullName + '\'' +
-                ", location='" + location + '\'' );
+                ", location='" + location + '\'');
     }
 
     @Override

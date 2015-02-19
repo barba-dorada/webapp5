@@ -17,4 +17,6 @@ public class HtmlUtil {
         String contact = r.getContacts().get(type);
         return contact == null ? "&nbsp;" : type.toHtml(contact);
     }
+
+
 }

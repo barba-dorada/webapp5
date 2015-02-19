@@ -12,7 +12,6 @@ public class TextSection extends Section {
         title = "";
     }
 
-
     public TextSection(String title) {
         this.title = title;
     }
@@ -42,11 +41,6 @@ public class TextSection extends Section {
     public int hashCode() {
         int result = title != null ? title.hashCode() : 0;
         return result;
-    }
-
-    @Override
-    public String toHtml() {
-        return "<div class='textsec'>"+title+"</div>";
     }
 
     @Override

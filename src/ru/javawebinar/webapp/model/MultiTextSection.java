@@ -59,17 +59,6 @@ public class MultiTextSection extends Section {
     }
 
     @Override
-    public String toHtml() {
-        StringBuilder sb=new StringBuilder();
-        sb.append("<div class='mtext'>");
-        for(String s:values){
-            sb.append("<div class='mtrow'>").append(s).append("</div>");
-        }
-        sb.append("</div>");
-        return sb.toString();
-    }
-
-    @Override
     public String getContent() {
         return String.join("\r\n", values);
     }

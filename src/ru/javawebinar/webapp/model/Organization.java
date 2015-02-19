@@ -43,7 +43,7 @@ public class Organization implements Serializable {
         this.periods = Arrays.asList(periods);
     }
 
-    public String toHtml() {
+/*    public String toHtml() {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class='organization'>");
         sb.append("<div class='orgname'><a href='" + link.getUrl() + "'>" + link.getName() + "</a></div>");
@@ -52,7 +52,7 @@ public class Organization implements Serializable {
         }
         sb.append("</div>");
         return sb.toString();
-    }
+    }*/
 
     public Link getLink() {
         return link;
@@ -163,23 +163,6 @@ public class Organization implements Serializable {
                     ", position='" + position + '\'' +
                     ", content='" + content + '\'' +
                     '}';
-        }
-
-        public String toHtml() {
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy LLLL");
-            StringBuilder sb = new StringBuilder();
-            sb.append("<div class='period'><div>");
-            sb.append(startDate.format(dtf)).append("-");
-            sb.append(endDate.equals(NOW) ? "сейчас" : endDate.format(dtf)).append("</div>");
-            sb.append("<div>").append(position).append(":").append(content).append("</div>");
-            sb.append("</div>");
-            return sb.toString();
-        }
-        String div(String text,String clazz){
-            return text;
-        }
-        StringBuilder div(StringBuilder sb, String clazz){
-            return sb.insert(0,"<div class='"+clazz+"'>").append("</div>");
         }
     }
 }

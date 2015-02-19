@@ -1,5 +1,6 @@
 <%@ page import="ru.javawebinar.webapp.model.ContactType" %>
 <%@ page import="ru.javawebinar.webapp.model.SectionType" %>
+<%@ page import="ru.javawebinar.webapp.web.Format" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -42,36 +43,20 @@
             <dt>Проживание:</dt>
             <dd><input type="text" name="location" size=50 value="${resume.location}"></dd>
         </dl>
-        <%--   <dl>
-               <dt>Домашняя старница:</dt>
-               <dd><input type="text" name="home_page" size=50 value="${resume.homePage}"></dd>
-           </dl>--%>
-        <h3>Контакты:</h3>
 
-        <p>
-            <c:forEach var="type" items="<%=ContactType.values()%>">
-        <dl>
-            <dt>${type.title}</dt>
-            <dd><input type="text" name="${type.name()}" size=30 value="${resume.getContact(type)}"></dd>
-        </dl>
+        <h3>Контакты:</h3>
+        <c:forEach var="type" items="<%=ContactType.values()%>">
+            <dl>
+                <dt>${type.title}</dt>
+                <dd><input type="text" name="${type.name()}" size=30 value="${resume.getContact(type)}"></dd>
+            </dl>
         </c:forEach>
 
-        <dl>
-            <dt>позиция</dt>
-            <dd><input type="text" name="OBJECTIVE" size="100"
-                       value="${resume.getSection(SectionType.OBJECTIVE).getContent()}"></dd>
-        </dl>
-        <dl>
-            <dt>достижения</dt>
-            <dd><textarea name="ACHIEVEMENT" cols="100"
-                          rows="5">${resume.getSection(SectionType.ACHIEVEMENT).getContent()}</textarea></dd>
-        </dl>
-        <dl>
-            <dt>квалификация</dt>
-            <dd><textarea name="QUALIFICATIONS" cols="100"
-                          rows="5">${resume.getSection(SectionType.QUALIFICATIONS).getContent()}</textarea></dd>
-        </dl>
-
+        <h3>Секции:</h3>
+        <c:forEach var="secType" items="<%=SectionType.values()%>">
+            ${Format.edit( secType,resume.getSection(secType))}
+    <%--        ${secType.getHtml4Edit(resume.getSection(secType))}--%>
+        </c:forEach>
 
         <button type="submit">Сохранить</button>
         <button onclick="window.history.back()">Отменить</button>
